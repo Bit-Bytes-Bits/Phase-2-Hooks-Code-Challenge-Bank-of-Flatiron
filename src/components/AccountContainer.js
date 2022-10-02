@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TransactionsList from "./TransactionsList";
 import Search from "./Search";
 import AddTransactionForm from "./AddTransactionForm";
-import {useSate} from "react";
+import {useState} from "react";
 
 function AccountContainer() {
-  // const [transaction, setTransaction] = useSate([])
+  const [transaction, setTransaction] = useState([])
   function fetchTransactions(){
     fetch("http://localhost:8001/transactions")
     .then((response) => response.json())
-    .then((data)=> console.log(data))
+    .then((data)=> {
+      setTransaction(data)
+    })
   }
 
+useEffect(()=> {
   fetchTransactions()
+}, [])
+
   return (
     <div>
       <Search />
       <AddTransactionForm />
-      <TransactionsList />
+      <TransactionsList transaction={transaction}/>
     </div>
   );
 }
