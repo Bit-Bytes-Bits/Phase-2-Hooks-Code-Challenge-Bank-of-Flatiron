@@ -1,7 +1,11 @@
 import React from "react";
 import Transaction from "./Transaction";
 
-function TransactionsList({transaction}) {
+function TransactionsList({ transaction, searchString }) {
+
+  const filteredTransaction = transaction.filter((filtered) =>
+    filtered.description.toLowerCase().includes(searchString.toLowerCase())
+  );
   return (
     <table className="ui celled striped padded table">
       <tbody>
@@ -20,8 +24,16 @@ function TransactionsList({transaction}) {
           </th>
         </tr>
         {/* render a list of <Transaction> components here */}
-        {transaction.map(transactionObject => { return <Transaction key={transactionObject.id} transactionObject={transactionObject}/>
-        })}
+        {filteredTransaction.map((transactionObject) => (
+          <Transaction
+            key={transactionObject.id}
+            date={transactionObject.date}
+            description={transactionObject.description}
+            category={transactionObject.category}
+            amount={transactionObject.amount}
+            transactionObject={transactionObject}
+          />
+        ))}
       </tbody>
     </table>
   );
